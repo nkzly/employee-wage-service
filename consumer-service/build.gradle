@@ -1,0 +1,21 @@
+version '1.0-SNAPSHOT'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.mapstruct:mapstruct'
+    annotationProcessor 'org.mapstruct:mapstruct-processor'
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'org.flywaydb:flyway-core'
+}
+
+jib {
+    from {
+        image = 'openjdk:11.0-jre-slim'
+    }
+    to {
+        image = 'cloudmore/consumer-service'
+        tags = ['latest', project.version]
+    }
+}

@@ -1,0 +1,79 @@
+plugins {
+	id 'java-library'
+	id 'org.springframework.boot' version '2.6.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'idea'
+	id 'com.google.cloud.tools.jib' version '3.2.0'
+}
+
+version = '1.0-SNAPSHOT'
+
+allprojects {
+	apply plugin: 'java-library'
+
+	repositories {
+		jcenter()
+	}
+}
+bootJar {
+	enabled = false
+}
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'idea'
+	apply plugin: 'com.google.cloud.tools.jib'
+
+	group = 'com.cloudmore.task'
+	sourceCompatibility = '11'
+
+	idea {
+		module {
+			downloadJavadoc = true
+			downloadSources = true
+		}
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://repo.spring.io/release"
+		}
+		maven {
+			url "https://repository.jboss.org/maven2"
+		}
+	}
+
+	dependencyManagement {
+		dependencies {
+			dependency 'org.mapstruct:mapstruct:1.4.1.Final'
+			dependency 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+			dependency 'org.springdoc:springdoc-openapi-ui:1.6.4'
+		}
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'org.springframework.kafka:spring-kafka'
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+
+}
+
+
+
